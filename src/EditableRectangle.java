@@ -25,7 +25,8 @@ public class EditableRectangle extends Group {
             Anchor anchor = (Anchor) obs;
             rectangle.xProperty().set(anchor.getCenterX());
             rectangle.yProperty().set(anchor.getCenterY());
-
+            rectangle.setWidth(anchor2.getCenterX()-anchor1.getCenterX());
+            rectangle.setHeight(anchor2.getCenterY()-anchor1.getCenterY());
         });
 
         anchor2.addListener(obs -> {
