@@ -2,9 +2,8 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
-import javafx.scene.shape.StrokeLineJoin;
 import javafx.stage.Stage;
-import javafx.scene.shape.Rectangle;
+
 
 
 public class Main extends Application {
@@ -18,6 +17,14 @@ public class Main extends Application {
         EditableTriangle triangle = new EditableTriangle(100.0, 100.0, 150.0, 50.0, 250.0, 150.0);
         EditableTriangle triangle2 = new EditableTriangle(300.0, 50.0, 300.0, 100.0, 400.0, 60.0);//The second triangle
         EditableRectangle rectangle = new EditableRectangle(100, 200, 300, 300);
+
+        rectangle.addListener(new MyListener() {
+            @Override
+            public void update(MyObservable observable) {
+                System.out.println("This rectangle has changed shape");
+            }
+        });
+
 
         root.getChildren().add(triangle);
         root.getChildren().add(triangle2);
