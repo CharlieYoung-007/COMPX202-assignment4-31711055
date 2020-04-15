@@ -2,8 +2,9 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
+import javafx.scene.text.Text;
 
 
 public class Main extends Application {
@@ -17,11 +18,17 @@ public class Main extends Application {
         EditableTriangle triangle = new EditableTriangle(100.0, 100.0, 150.0, 50.0, 250.0, 150.0);
         EditableTriangle triangle2 = new EditableTriangle(300.0, 50.0, 300.0, 100.0, 400.0, 60.0);//The second triangle
         EditableRectangle rectangle = new EditableRectangle(100, 200, 300, 300);
+        Text text = new Text();
+        text.setX(450);
+        text.setY(30);
+        text.setFont(Font.font ("Verdana", 20));
+        text.setFill(Color.WHITE);
 
         rectangle.addListener(new MyListener() {
             @Override
             public void update(MyObservable observable) {
-                System.out.println("This rectangle has changed shape");
+//                System.out.println("This rectangle has changed shape");
+                text.setText(String.valueOf(rectangle.getWidth() +" * "+ rectangle.getHeight()));
             }
         });
 
@@ -29,6 +36,7 @@ public class Main extends Application {
         root.getChildren().add(triangle);
         root.getChildren().add(triangle2);
         root.getChildren().add(rectangle);
+        root.getChildren().add(text);
 
         Scene scene = new Scene(root, 600, 500, Color.BISQUE);
         stage.setTitle("Assignment 4");

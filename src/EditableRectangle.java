@@ -9,9 +9,12 @@ import java.util.List;
 public class EditableRectangle extends Group implements MyObservable {
 
     private List<MyListener> listeners = new ArrayList<>();
+    private Rectangle rectangle;
+    private Anchor anchor1;
+    private Anchor anchor2;
 
     public EditableRectangle(double x1, double y1, double x2, double y2) {
-        Rectangle rectangle = new Rectangle();//initial the rectangle
+        rectangle = new Rectangle();//initial the rectangle
         rectangle.setStroke(Color.FORESTGREEN);
         rectangle.setStrokeWidth(12);
         rectangle.setStrokeLineJoin(StrokeLineJoin.ROUND);
@@ -23,8 +26,8 @@ public class EditableRectangle extends Group implements MyObservable {
         rectangle.setHeight(y2 - y1);
         getChildren().add(rectangle);
 
-        Anchor anchor1 = new Anchor(x1, y1); //the first anchor
-        Anchor anchor2 = new Anchor(x2, y2); // the second anchor
+        anchor1 = new Anchor(x1, y1); //the first anchor
+        anchor2 = new Anchor(x2, y2); // the second anchor
 
         anchor1.addListener(obs -> {
             Anchor anchor = (Anchor) obs;
@@ -37,7 +40,7 @@ public class EditableRectangle extends Group implements MyObservable {
             if (anchor1.getCenterY() < anchor2.getCenterY()) {
                 rectangle.yProperty().set(anchor.getCenterY());
                 rectangle.setHeight(anchor2.getCenterY() - anchor.getCenterY());
-            }else {
+            } else {
                 rectangle.setHeight(anchor.getCenterY() - anchor2.getCenterY());
             }
             notifyListeners();
@@ -54,7 +57,7 @@ public class EditableRectangle extends Group implements MyObservable {
             if (anchor1.getCenterY() < anchor2.getCenterY()) {
 
                 rectangle.setHeight(anchor.getCenterY() - anchor1.getCenterY());
-            }else {
+            } else {
                 rectangle.yProperty().set(anchor.getCenterY());
                 rectangle.setHeight(anchor1.getCenterY() - anchor.getCenterY());
             }
@@ -65,6 +68,13 @@ public class EditableRectangle extends Group implements MyObservable {
         getChildren().add(anchor2);
     }
 
+    public double getWidth() {
+        return Math.abs(anchor1.getCenterX() - anchor2.getCenterX());
+    }
+
+    public double getHeight() {
+        return Math.abs(anchor1.getCenterY() - anchor2.getCenterY());
+    }
 
     @Override
     public void addListener(MyListener listener) {
