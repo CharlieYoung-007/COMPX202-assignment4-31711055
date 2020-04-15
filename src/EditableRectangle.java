@@ -19,14 +19,23 @@ public class EditableRectangle extends Group {
         getChildren().add(rectangle);
 
         Anchor anchor1 = new Anchor(x1, y1); //the first anchor
+        Anchor anchor2 = new Anchor(x2, y2); // the second anchor
 
         anchor1.addListener(obs -> {
             Anchor anchor = (Anchor) obs;
             rectangle.xProperty().set(anchor.getCenterX());
             rectangle.yProperty().set(anchor.getCenterY());
+
+        });
+
+        anchor2.addListener(obs -> {
+            Anchor anchor = (Anchor) obs;
+            rectangle.setWidth(anchor.getCenterX()-anchor1.getCenterX());
+            rectangle.setHeight(anchor.getCenterY()-anchor1.getCenterY());
         });
 
         getChildren().add(anchor1);
+        getChildren().add(anchor2);
     }
 
 
