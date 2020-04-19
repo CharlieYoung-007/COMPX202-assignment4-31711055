@@ -118,16 +118,40 @@ Instructions
 > **Question 15**
 
 > Write your answer here
-
-
+I will use the Junit5 test. In the test, I will create an instance of a rectangle first and then give the rectangle 
+some special variables, such as rectangle(50,50,60,60), which are easy to calculate. Secondly, I will use getHeight() 
+and getWith() methods to obtain the height and width of the rectangle. Thirdly, I create two local variables, one is 
+called area evaluated the value from height*width and the other is called perimeter evaluated value from (height +
+width)*2. Finally, I will use an assertEqual() method to test the value of area and perimeter whether equal to my 
+expectation's answer.
 ````
 
 ````
 > **Question 16**
 
 > Write your answer here
+detail one:
+When I want to drag the anchor in the upper left corner. I need to create an editablerectangle instance first 
+to define the points in the upper right corner and the lower left corner. Then I added an addListener for it 
+to listen for mouse movement events. The code first determines which corner it is (using the if else statement) 
+and then performs the movement of the corresponding corner. Anchor coordinates are recorded and changed as you 
+drag them. The notifylisteners () method is then executed because the editablerectangle class implements the 
+myobservable interface. Finally, the listener in the start () method of the main class captures the location 
+and prints out the rectangular data.
+Other：
+Most of the execution statements of the code are similar to pulling the left corner, but when dragging, 
+the if else statement will be executed in update (myobservable observable) to determine which corner 
+I draged and execute the pulling effect of the corresponding corner.
+````
 
+````
+> **Question 17**
 
+> the analysis
+I know that the effect of this step is that when moving an anchor to change the shape of the rectangle, 
+the position of the drawing points of the two adjacent anchors of the angle to be draged will also change. 
+So I want to set if else statement to judge which anchor is draged, and then the tracing point position 
+of its adjacent anchor will change accordingly.
 ````
 
 Submitting

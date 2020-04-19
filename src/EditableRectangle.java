@@ -2,7 +2,6 @@ import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.StrokeLineJoin;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,11 +9,10 @@ public class EditableRectangle extends Group implements MyObservable {
 
     private List<MyListener> listeners = new ArrayList<>();
     private Rectangle rectangle;
-    private Anchor anchor1;
-    private Anchor anchor2;
+    private Anchor[] anchors;
 
     public EditableRectangle(double x1, double y1, double x2, double y2) {
-        rectangle = new Rectangle();//initial the rectangle
+        rectangle = new Rectangle();
         rectangle.setStroke(Color.FORESTGREEN);
         rectangle.setStrokeWidth(12);
         rectangle.setStrokeLineJoin(StrokeLineJoin.ROUND);
@@ -26,54 +24,64 @@ public class EditableRectangle extends Group implements MyObservable {
         rectangle.setHeight(y2 - y1);
         getChildren().add(rectangle);
 
-        anchor1 = new Anchor(x1, y1); //the first anchor
-        anchor2 = new Anchor(x2, y2); // the second anchor
+        anchors = new Anchor[4];
+        anchors[0] = new Anchor(x1, y1);
+        anchors[1] = new Anchor(x2, y2);
+        anchors[2] = new Anchor(x1, y2);
+        anchors[3] = new Anchor(x2, y1);
 
-        anchor1.addListener(obs -> {
-            Anchor anchor = (Anchor) obs;
-            if (anchor1.getCenterX() < anchor2.getCenterX()) {
-                rectangle.xProperty().set(anchor.getCenterX());
-                rectangle.setWidth(anchor2.getCenterX() - anchor.getCenterX());
-            } else {
-                rectangle.setWidth(anchor.getCenterX() - anchor2.getCenterX());
-            }
-            if (anchor1.getCenterY() < anchor2.getCenterY()) {
-                rectangle.yProperty().set(anchor.getCenterY());
-                rectangle.setHeight(anchor2.getCenterY() - anchor.getCenterY());
-            } else {
-                rectangle.setHeight(anchor.getCenterY() - anchor2.getCenterY());
-            }
-            notifyListeners();
-        });
+        MyListener myListener = new MyListener() {
+            @Override
+            public void update(MyObservable observable) {
+                Anchor an = (Anchor) observable;
+                if (an == anchors[0]) {
+                    anchors[2].setCenterX(anchors[0].getCenterX());
+                    anchors[3].setCenterY(anchors[0].getCenterY());
+                } else if (an == anchors[1]) {
+                    anchors[2].setCenterY(anchors[1].getCenterY());
+                    anchors[3].setCenterX(anchors[1].getCenterX());
 
-        anchor2.addListener(obs -> {
-            Anchor anchor = (Anchor) obs;
-            if (anchor1.getCenterX() < anchor2.getCenterX()) {
-                rectangle.setWidth(anchor.getCenterX() - anchor1.getCenterX());
-            } else {
-                rectangle.xProperty().set(anchor.getCenterX());
-                rectangle.setWidth(anchor1.getCenterX() - anchor.getCenterX());
-            }
-            if (anchor1.getCenterY() < anchor2.getCenterY()) {
+                } else if (an == anchors[2]) {
+                    anchors[0].setCenterX(anchors[2].getCenterX());
+                    anchors[1].setCenterY(anchors[2].getCenterY());
 
-                rectangle.setHeight(anchor.getCenterY() - anchor1.getCenterY());
-            } else {
-                rectangle.yProperty().set(anchor.getCenterY());
-                rectangle.setHeight(anchor1.getCenterY() - anchor.getCenterY());
-            }
-            notifyListeners();
-        });
+                } else if (an == anchors[3]) {
+                    anchors[1].setCenterX(anchors[3].getCenterX());
+                    anchors[0].setCenterY(anchors[3].getCenterY());
+                }
 
-        getChildren().add(anchor1);
-        getChildren().add(anchor2);
+                double x = Math.min(anchors[0].getCenterX(), anchors[1].getCenterX());
+                double y = Math.min(anchors[0].getCenterY(), anchors[1].getCenterY());
+                double width = Math.abs(anchors[0].getCenterX() - anchors[1].getCenterX());
+                double height = Math.abs(anchors[0].getCenterY() - anchors[1].getCenterY());
+
+
+                rectangle.setX(x);
+                rectangle.setY(y);
+                rectangle.setWidth(width);
+                rectangle.setHeight(height);
+
+                notifyListeners();
+            }
+        };
+
+        anchors[0].addListener(myListener);
+        anchors[1].addListener(myListener);
+        anchors[2].addListener(myListener);
+        anchors[3].addListener(myListener);
+
+        getChildren().add(anchors[0]);
+        getChildren().add(anchors[1]);
+        getChildren().add(anchors[2]);
+        getChildren().add(anchors[3]);
     }
 
     public double getWidth() {
-        return Math.abs(anchor1.getCenterX() - anchor2.getCenterX());
+        return Math.abs(anchors[0].getCenterX() - anchors[1].getCenterX());
     }
 
     public double getHeight() {
-        return Math.abs(anchor1.getCenterY() - anchor2.getCenterY());
+        return Math.abs(anchors[0].getCenterY() - anchors[1].getCenterY());
     }
 
     @Override

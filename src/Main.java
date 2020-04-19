@@ -24,16 +24,6 @@ public class Main extends Application {
         text.setFont(Font.font("Verdana", 20));
         text.setFill(Color.WHITE);
 
-
-        rectangle.addListener(new MyListener() {
-            @Override
-            public void update(MyObservable observable) {
-//                System.out.println("This rectangle has changed shape");
-                text.setText(String.valueOf("Area: " + rectangle.getWidth()
-                        * rectangle.getHeight())); //show the height and width of rectangle
-            }
-        });
-
         Text text2 = new Text();
         text2.setX(400);
         text2.setY(60);
@@ -45,8 +35,10 @@ public class Main extends Application {
             @Override
             public void update(MyObservable observable) {
 //                System.out.println("This rectangle has changed shape");
+                text.setText(String.valueOf("Area: " + rectangle.getWidth()
+                        * rectangle.getHeight())); //show the height and width of rectangle
                 text2.setText(String.valueOf("Perimeter: " + 2 * (rectangle.getWidth() +
-                        rectangle.getHeight()))); //show the height and width of rectangle
+                        rectangle.getHeight()))); //show the perimeter of rectangle
             }
         });
 
